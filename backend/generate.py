@@ -2,7 +2,7 @@ import os
 import shutil
 from pathlib import Path
 
-# Check if AI mode is enabled
+# Flag: Enable AI only if USE_AI=true
 USE_AI = os.getenv("USE_AI", "false").lower() == "true"
 
 if USE_AI:
@@ -14,7 +14,7 @@ if USE_AI:
     device = "cuda" if torch.cuda.is_available() else "cpu"
     dtype = torch.float16 if torch.cuda.is_available() else torch.float32
 
-    print("Loading Stable Diffusion + Stable Video Diffusion...")
+    print("🚀 Loading Stable Diffusion + Stable Video Diffusion...")
     txt2img = StableDiffusionPipeline.from_pretrained(
         "runwayml/stable-diffusion-v1-5", torch_dtype=dtype
     ).to(device)
@@ -26,15 +26,16 @@ if USE_AI:
     ).to(device)
 
     def generate_ai_video(prompt: str, output_path: str):
+        """Generate real AI video (local/Colab with GPU)"""
         image = txt2img(prompt).images[0]
-        result = vid_pipe(image, num_frames=48)
+        result = vid_pipe(image, num_frames=48)  # ~9s @ 5fps
         frames = result.frames[0]
         Path(output_path).parent.mkdir(parents=True, exist_ok=True)
-        import imageio
         imageio.mimsave(output_path, frames, fps=5)
         return output_path
 else:
     def generate_ai_video(prompt: str, output_path: str):
+        """Disabled in Render deployment"""
         raise RuntimeError("AI mode disabled in cloud deployment")
 
 
