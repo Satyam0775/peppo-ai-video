@@ -1,12 +1,13 @@
 import os
+import uuid
 from fastapi import FastAPI, Form
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import FileResponse
-import uuid
 from generate import generate_ai_video, generate_mock, USE_AI
 
 app = FastAPI()
 
+# Allow frontend (Vercel) to call backend
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
@@ -26,10 +27,11 @@ async def generate_video(prompt: str = Form(...)):
         else:
             generate_mock(prompt, output_path)
     except Exception as e:
-        print("⚠️ Fallback to mock due to error:", e)
+        print("⚠️ Error, falling back to mock:", e)
         generate_mock(prompt, output_path)
 
-    return {"video_url": f"http://localhost:8000/videos/{output_name}"}
+    return {"video_url": f"/videos/{output_name}"}
+
 
 @app.get("/videos/{filename}")
 async def serve_video(filename: str):
