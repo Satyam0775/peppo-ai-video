@@ -17,7 +17,8 @@ Built as part of the **Peppo AI Engineering Internship Challenge**.
 ## 🌐 Live Links
 - **Frontend (Vercel)** → [Live Demo](https://peppo-ai-video.vercel.app)  
 - **Backend (Render)** → [API Docs](https://peppo-ai-video.onrender.com/docs)  
-- **Colab Notebook (Real AI Demo)** → [Run on Colab](https://colab.research.google.com/) _(link your notebook)_
+- **Colab Notebook (Real AI Demo)** → [Run on Colab](https://colab.research.google.com/drive/1T022oGhrvKQm8bRQDCC4GtTLIlCFfazq?usp=sharing)
+
 
 ---
 
