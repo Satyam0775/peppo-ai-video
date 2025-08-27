@@ -14,10 +14,9 @@ function App() {
 
     try {
       setLoading(true);
-      // ✅ Use backend URL from env (VITE_API_URL)
       const API_URL = import.meta.env.VITE_API_URL;
       const res = await axios.post(`${API_URL}/generate`, formData);
-      setVideoUrl(res.data.video_url);
+      setVideoUrl(`${API_URL}${res.data.video_url}`);
     } catch (err) {
       console.error("Error generating video:", err);
       alert("Error generating video. Check backend logs.");
