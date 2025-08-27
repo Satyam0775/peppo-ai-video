@@ -19,12 +19,8 @@ function App() {
       const res = await axios.post(`${API_URL}/generate`, formData);
       console.log("Backend response:", res.data);
 
-      let videoPath = res.data.video_url;
-      if (!videoPath.startsWith("http")) {
-        videoPath = `${API_URL}${videoPath}`;
-      }
-
-      setVideoUrl(videoPath);
+      // ✅ Backend already returns full video URL
+      setVideoUrl(res.data.video_url);
     } catch (err) {
       console.error("Error generating video:", err);
       alert("Error generating video. Check backend logs.");
