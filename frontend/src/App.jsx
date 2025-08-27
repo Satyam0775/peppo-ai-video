@@ -15,8 +15,16 @@ function App() {
     try {
       setLoading(true);
       const API_URL = import.meta.env.VITE_API_URL;
+
       const res = await axios.post(`${API_URL}/generate`, formData);
-      setVideoUrl(`${API_URL}${res.data.video_url}`);
+      console.log("Backend response:", res.data);
+
+      let videoPath = res.data.video_url;
+      if (!videoPath.startsWith("http")) {
+        videoPath = `${API_URL}${videoPath}`;
+      }
+
+      setVideoUrl(videoPath);
     } catch (err) {
       console.error("Error generating video:", err);
       alert("Error generating video. Check backend logs.");
