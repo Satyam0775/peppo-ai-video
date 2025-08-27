@@ -4,37 +4,67 @@ import axios from "axios";
 function App() {
   const [prompt, setPrompt] = useState("");
   const [videoUrl, setVideoUrl] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleGenerate = async () => {
+    if (!prompt) return alert("Please enter a prompt!");
+
     const formData = new FormData();
     formData.append("prompt", prompt);
 
     try {
-      const res = await axios.post("http://localhost:8000/generate", formData);
+      setLoading(true);
+      // ✅ Use backend URL from env (VITE_API_URL)
+      const API_URL = import.meta.env.VITE_API_URL;
+      const res = await axios.post(`${API_URL}/generate`, formData);
       setVideoUrl(res.data.video_url);
     } catch (err) {
       console.error("Error generating video:", err);
+      alert("Error generating video. Check backend logs.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div style={{ padding: 20 }}>
+    <div style={{ padding: 20, fontFamily: "sans-serif" }}>
       <h1>🎬 Peppo AI Video Generator</h1>
       <input
         type="text"
         placeholder="Enter your prompt..."
         value={prompt}
         onChange={(e) => setPrompt(e.target.value)}
-        style={{ padding: 10, width: "60%" }}
+        style={{
+          padding: 10,
+          width: "60%",
+          borderRadius: 5,
+          border: "1px solid #ccc",
+        }}
       />
-      <button onClick={handleGenerate} style={{ marginLeft: 10, padding: 10 }}>
-        Generate Video
+      <button
+        onClick={handleGenerate}
+        style={{
+          marginLeft: 10,
+          padding: "10px 20px",
+          borderRadius: 5,
+          border: "none",
+          background: "#4CAF50",
+          color: "white",
+          cursor: "pointer",
+        }}
+      >
+        {loading ? "Generating..." : "Generate Video"}
       </button>
 
       {videoUrl && (
         <div style={{ marginTop: 20 }}>
           <h3>Generated Video:</h3>
-          <video src={videoUrl} controls width="480"></video>
+          <video
+            src={videoUrl}
+            controls
+            width="480"
+            style={{ border: "1px solid #ddd", borderRadius: 8 }}
+          ></video>
         </div>
       )}
     </div>
@@ -42,4 +72,3 @@ function App() {
 }
 
 export default App;
- 
