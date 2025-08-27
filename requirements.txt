@@ -9,12 +9,14 @@ imageio-ffmpeg==0.4.9
 opencv-python==4.10.0.84
 ffmpeg-python==0.2.0
 
-# --- AI / Diffusion Models ---
+# --- AI / Diffusion Models (only used in GPU/local/Colab) ---
 torch>=2.0.0
 diffusers>=0.28.0
 transformers>=4.41.0
 accelerate>=0.30.0
 safetensors>=0.4.3
+huggingface-hub>=0.23.0
+hf-xet>=1.1.8
 
 # --- Utils ---
 numpy>=1.26.4
